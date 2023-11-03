@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/base-layout.astro';
+import { Main } from '@/components/main';
 ---
 
 <BaseLayout title="Home">
-  <main class="text-xl">Index</main>
+  <Main client:load />
 </BaseLayout>
