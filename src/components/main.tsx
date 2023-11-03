@@ -7,7 +7,7 @@ export const Main: Component = () => {
   const [input, setInput] = createSignal('');
   const [output, setOutput] = createSignal('');
   const [error, setError] = createSignal('');
-  const [showInfo, setShowInfo] = createSignal(true);
+  const [showInfo, setShowInfo] = createSignal(false);
 
   const containsAccessModifier = (word: string) =>
     word.includes('public') || word.includes('private') || word.includes('protected');
