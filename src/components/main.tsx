@@ -1,12 +1,13 @@
 import { createSignal, Show, type Component } from 'solid-js';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
-import { CopyIcon } from './common/icons';
+import { CopyIcon, InfoIcon } from './common/icons';
 
 export const Main: Component = () => {
   const [input, setInput] = createSignal('');
   const [output, setOutput] = createSignal('');
   const [error, setError] = createSignal('');
+  const [showInfo, setShowInfo] = createSignal(true);
 
   const containsAccessModifier = (word: string) =>
     word.includes('public') || word.includes('private') || word.includes('protected');
@@ -77,11 +78,36 @@ export const Main: Component = () => {
   };
 
   const handleEnumConvert = (lines: string[]) => {
-    for (const line of lines) {
+    const outputValue: string[] = [];
+    let enumName = '';
+
+    for (let line of lines) {
+      line = line.trim().replace(',', '').replace('}', '');
+      if (!line) {
+        continue;
+      }
+
+      if (line.includes('enum')) {
+        const words = line.split(' ');
+        if (words.length < 3) {
+          setError(`The line "${line}" is not valid, please format it correctly`);
+          return;
+        }
+        enumName = words[2];
+        outputValue.push(`export const ${enumName}Enum {`);
+        continue;
+      }
+
+      outputValue.push(`  ${line}: ${line},`);
     }
+
+    outputValue.push('} as const;');
+    outputValue.push(`export type ${enumName} = EnumValue<typeof ${enumName}Enum>;`);
+    setOutput(outputValue.join('\n'));
   };
 
   const convert = () => {
+    setError('');
     const intputValue = input();
     if (intputValue) {
       if (!intputValue.includes('\n')) {
@@ -112,6 +138,7 @@ export const Main: Component = () => {
       </div>
       <div class="relative flex h-fit gap-8">
         <Textarea
+          name="input"
           class="h-[35rem] min-h-[35rem]"
           placeholder='Copy your java class/enum here, for example:
           public class CustomerModel {
@@ -120,7 +147,7 @@ export const Main: Component = () => {
             private String firstName;
             private String lastName;
             private Long age;
-            private Boolean isAdult = false;
+            private Boolean isVerified = false;
             private List<AddressModel> addresses = new ArrayList<AddressModel>();
             private List<String> phoneNumbers = new ArrayList<String>();
           
@@ -136,12 +163,28 @@ export const Main: Component = () => {
           </Button>
         </div>
         <div class="relative h-fit w-full">
-          <Textarea value={output()} placeholder="Typescript output" class="h-[35rem] min-h-[35rem]" />
+          <Textarea name="output" value={output()} placeholder="Typescript output" class="h-[35rem] min-h-[35rem]" />
           <Button class="absolute bottom-2 right-2" variant="ghost" size="icon" onClick={() => void copyToClipboard()}>
             <CopyIcon class="h-6 w-6" />
           </Button>
+          <Button
+            class="absolute bottom-2 right-12"
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowInfo((prev) => !prev)}
+          >
+            <InfoIcon class="h-6 w-6" />
+          </Button>
         </div>
       </div>
+      <Show when={showInfo()}>
+        <div class="relative top-[-30px] flex justify-end">
+          <span class="text-sm text-muted-foreground">
+            Copy this type if you don't already have it for the enums:{' '}
+            <span class="font-bold">{'export type EnumValue<T> = T[keyof T];'}</span>
+          </span>
+        </div>
+      </Show>
       <Show when={error()}>
         <p class="text-center text-destructive">{error()}</p>
       </Show>

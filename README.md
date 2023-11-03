@@ -1,5 +1,3 @@
-# java-class-to-ts-type
+# Java-to-TS
 
-- Simple website to paste java class and get typescript type
-
-- do the same for enums
+- Simple website to paste java class/enum and get typescript type
