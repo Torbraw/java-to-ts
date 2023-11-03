@@ -1,0 +1,1 @@
+# java-class-to-ts-type
