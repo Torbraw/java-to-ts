@@ -1,6 +1,7 @@
 import { createSignal, Show, type Component } from 'solid-js';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
+import { CopyIcon } from './common/icons';
 
 export const Main: Component = () => {
   const [input, setInput] = createSignal('');
@@ -99,18 +100,19 @@ export const Main: Component = () => {
     }
   };
 
-  const copyToClipboard = () => {
-    console.log('copyToClipboard');
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(output());
   };
 
   return (
-    <main class="flex flex-col gap-8 p-8">
+    <main class="flex h-fit flex-col gap-8 p-8">
       <div>
         <h1 class="text-center text-4xl font-bold">Convert Java class to Typescript type</h1>
         <h2 class="text-center font-bold text-muted-foreground">And also Java enum to Typescript const enum</h2>
       </div>
-      <div class="relative flex h-[35rem] gap-8">
+      <div class="relative flex h-fit gap-8">
         <Textarea
+          class="h-[35rem] min-h-[35rem]"
           placeholder='Copy your java class/enum here, for example:
           public class CustomerModel {
             private String customerId;
@@ -128,15 +130,17 @@ export const Main: Component = () => {
           }'
           onChange={(e) => setInput(e.target.value)}
         />
-        <div class="flex flex-col justify-center">
+        <div class="flex h-[35rem] flex-col justify-center">
           <Button variant="outline" size="lg" onClick={convert}>
             GO
           </Button>
         </div>
-        <Textarea value={output()} placeholder="Typescript output" />
-        <Button class="absolute right-2 top-2" variant="ghost" size="icon" onClick={copyToClipboard}>
-          C
-        </Button>
+        <div class="relative h-fit w-full">
+          <Textarea value={output()} placeholder="Typescript output" class="h-[35rem] min-h-[35rem]" />
+          <Button class="absolute bottom-2 right-2" variant="ghost" size="icon" onClick={() => void copyToClipboard()}>
+            <CopyIcon class="h-6 w-6" />
+          </Button>
+        </div>
       </div>
       <Show when={error()}>
         <p class="text-center text-destructive">{error()}</p>
