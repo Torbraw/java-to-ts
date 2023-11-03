@@ -46,7 +46,10 @@ export const Main: Component = () => {
       const name = words[2];
 
       let convertedType = '';
-      if (type.toLowerCase() in TypeMapping) {
+      if (type === 'class') {
+        outputValue.push(`export type ${name} {`);
+        continue;
+      } else if (type.toLowerCase() in TypeMapping) {
         convertedType = TypeMapping[type.toLowerCase() as keyof typeof TypeMapping];
       } else if (type.includes('<') && type.includes('>')) {
         const arrayType = type.split('<')[1].split('>')[0];
@@ -59,11 +62,18 @@ export const Main: Component = () => {
         convertedType = type;
       }
 
-      const convertedName = name;
+      let convertedName = '';
+      if (name.startsWith('get')) {
+        const replacedName = name.replace('get', '').replace('()', '');
+        convertedName = replacedName[0].toLowerCase() + replacedName.slice(1);
+      } else {
+        convertedName = name;
+      }
 
-      outputValue.push(`${convertedName}: ${convertedType};`);
+      outputValue.push(`  ${convertedName}: ${convertedType};`);
     }
 
+    outputValue.push('}');
     setOutput(outputValue.join('\n'));
   };
 
@@ -81,10 +91,9 @@ export const Main: Component = () => {
       }
 
       const lines = intputValue.split('\n');
-      const firstLine = lines.shift() as string;
-      if (firstLine.includes('class')) {
+      if (lines[0].includes('class')) {
         handleClassConvert(lines);
-      } else if (firstLine.includes('enum')) {
+      } else if (lines[0].includes('enum')) {
         handleEnumConvert(lines);
       } else {
         setError('Cannot detect the type of the input, please format it correctly');
