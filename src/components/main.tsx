@@ -47,7 +47,7 @@ export const Main: Component = () => {
 
       let convertedType = '';
       if (type === 'class') {
-        outputValue.push(`export type ${name} {`);
+        outputValue.push(`export type ${name} = {`);
         continue;
       } else if (type.toLowerCase() in TypeMapping) {
         convertedType = TypeMapping[type.toLowerCase() as keyof typeof TypeMapping];
@@ -94,15 +94,15 @@ export const Main: Component = () => {
           return;
         }
         enumName = words[2];
-        outputValue.push(`export const ${enumName}Enum {`);
+        outputValue.push(`export const ${enumName}Enum = {`);
         continue;
       }
 
-      outputValue.push(`  ${line}: ${line},`);
+      outputValue.push(`  ${line}: "${line}",`);
     }
 
     outputValue.push('} as const;');
-    outputValue.push(`export type ${enumName} = EnumValue<typeof ${enumName}Enum>;`);
+    outputValue.push(`export type ${enumName} = EnumValues<typeof ${enumName}Enum>;`);
     setOutput(outputValue.join('\n'));
   };
 
@@ -181,7 +181,7 @@ export const Main: Component = () => {
         <div class="relative top-[-30px] flex justify-end">
           <span class="text-sm text-muted-foreground">
             Copy this type if you don't already have it for the enums:{' '}
-            <span class="font-bold">{'export type EnumValue<T> = T[keyof T];'}</span>
+            <span class="font-bold">{'export type EnumValues<T> = T[keyof T];'}</span>
           </span>
         </div>
       </Show>
