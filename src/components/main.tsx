@@ -3,9 +3,7 @@ import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 
 export const Main: Component = () => {
-  const testInput =
-    'public class CustomerModel {\n  private String customerId;\n  private String organizationId;\n  private CustomerType customerType;\n  private String firstName;\n  private String lastName;\n  private String email;\n  private Long version;\n  private Boolean requiresValidation = false;\n  private List<AddressModel> addresses = new ArrayList<AddressModel>();\n  private List<String> phoneNumbers = new ArrayList<String>();\n\n  public String getDisplayName() {\n    return this.firstName + " " + this.lastName;\n  }\n}';
-  const [input, setInput] = createSignal(testInput);
+  const [input, setInput] = createSignal('');
   const [output, setOutput] = createSignal('');
   const [error, setError] = createSignal('');
 
