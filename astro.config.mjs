@@ -9,6 +9,6 @@ export default defineConfig({
     applyBaseStyles: false
   }), solidJs()],
   server: {
-    port: 9000
+    port: 5555
   }
 });
