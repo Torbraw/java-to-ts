@@ -7,5 +7,8 @@ import solidJs from "@astrojs/solid-js";
 export default defineConfig({
   integrations: [tailwind({
     applyBaseStyles: false
-  }), solidJs()]
+  }), solidJs()],
+  server: {
+    port: 9000
+  }
 });
