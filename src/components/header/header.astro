@@ -1,8 +1,15 @@
 ---
+import { GithubIcon } from '../common/icons';
+import { buttonVariants } from '../ui/button';
 import ThemeToggle from './theme-toggle.astro';
 ---
 
 <header class="mb-4 flex h-12 items-center border-b border-border px-8 print:hidden">
   <div class="flex flex-1"></div>
-  <ThemeToggle />
+  <div class="flex justify-end gap-2">
+    <a href="https://github.com/Torbraw/java-to-ts" class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+      <GithubIcon class="h-6 w-6" />
+    </a>
+    <ThemeToggle />
+  </div>
 </header>
