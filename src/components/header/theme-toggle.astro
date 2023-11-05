@@ -9,7 +9,7 @@ type Props = Omit<ComponentProps<'button'>, 'classList'>;
 const { class: className = '', ...rest } = Astro.props;
 ---
 
-<Button 
+<Button
   aria-label="theme-toggle"
   variant="ghost"
   size="icon"
