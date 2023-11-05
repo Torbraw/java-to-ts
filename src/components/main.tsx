@@ -158,16 +158,23 @@ export const Main: Component = () => {
           onChange={(e) => setInput(e.target.value)}
         />
         <div class="flex h-[35rem] flex-col justify-center">
-          <Button variant="outline" size="lg" onClick={convert}>
+          <Button variant="outline" size="lg" onClick={convert} aria-label="go">
             GO
           </Button>
         </div>
         <div class="relative h-fit w-full">
           <Textarea name="output" value={output()} placeholder="Typescript output" class="h-[35rem] min-h-[35rem]" />
-          <Button class="absolute bottom-2 right-2" variant="ghost" size="icon" onClick={() => void copyToClipboard()}>
+          <Button
+            aria-label="copy"
+            class="absolute bottom-2 right-2"
+            variant="ghost"
+            size="icon"
+            onClick={() => void copyToClipboard()}
+          >
             <CopyIcon class="h-6 w-6" />
           </Button>
           <Button
+            aria-label="info"
             class="absolute bottom-2 right-12"
             variant="ghost"
             size="icon"

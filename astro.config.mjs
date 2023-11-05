@@ -5,10 +5,9 @@ import solidJs from "@astrojs/solid-js";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://torbraw.github.io",
+  base: "java-to-ts",
   integrations: [tailwind({
     applyBaseStyles: false
   }), solidJs()],
-  server: {
-    port: 5555
-  }
 });
