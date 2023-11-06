@@ -22,6 +22,9 @@ export const Main: Component = () => {
     byte: 'number',
     float: 'number',
     double: 'number',
+    localDate: 'Date',
+    localDateTime: 'Date',
+    zonedDateTime: 'Date',
   } as const;
 
   const handleClassConvert = (lines: string[]) => {
@@ -48,6 +51,9 @@ export const Main: Component = () => {
       let convertedType = '';
       if (type === 'class') {
         outputValue.push(`export type ${name} = {`);
+        continue;
+      } else if (type.includes('()')) {
+        // Constructor
         continue;
       } else if (type.toLowerCase() in TypeMapping) {
         convertedType = TypeMapping[type.toLowerCase() as keyof typeof TypeMapping];
@@ -141,20 +147,25 @@ export const Main: Component = () => {
           name="input"
           class="h-[35rem] min-h-[35rem]"
           placeholder='Copy your java class/enum here, for example:
-          public class CustomerModel {
-            private String customerId;
-            private CustomerType customerType;
-            private String firstName;
-            private String lastName;
-            private Long age;
-            private Boolean isVerified = false;
-            private List<AddressModel> addresses = new ArrayList<AddressModel>();
-            private List<String> phoneNumbers = new ArrayList<String>();
+  public class CustomerModel {
+    private String customerId;
+    private CustomerType customerType;
+    private String firstName;
+    private String lastName;
+    private Long age;
+    private Boolean isVerified = false;
+    private LocalDate dateOfBirth;
+    private List<AddressModel> addresses = new ArrayList<AddressModel>();
+    private List<String> phoneNumbers = new ArrayList<String>();
           
-            public String getDisplayName() {
-              return this.firstName + " " + this.lastName;
-            }
-          }'
+    public String getDisplayName() {
+      return this.firstName + " " + this.lastName;
+    }
+
+    public CustomerModel() {
+      this.customerId = UUID.randomUUID().toString();
+    }
+  }'
           onChange={(e) => setInput(e.target.value)}
         />
         <div class="flex h-[35rem] flex-col justify-center">
