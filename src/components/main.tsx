@@ -29,6 +29,8 @@ export const Main: Component = () => {
 
   const handleClassConvert = (lines: string[]) => {
     const outputValue: string[] = [];
+    let className = '';
+
     for (let line of lines) {
       line = line.trim().replace(';', '');
       if (!line) {
@@ -50,9 +52,10 @@ export const Main: Component = () => {
 
       let convertedType = '';
       if (type === 'class') {
+        className = name;
         outputValue.push(`export type ${name} = {`);
         continue;
-      } else if (type.includes('(') && type.includes(')')) {
+      } else if (type.includes(className)) {
         // Constructor
         continue;
       } else if (type.toLowerCase() in TypeMapping) {
