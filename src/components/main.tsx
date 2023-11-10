@@ -22,9 +22,9 @@ export const Main: Component = () => {
     byte: 'number',
     float: 'number',
     double: 'number',
-    localDate: 'Date',
-    localDateTime: 'Date',
-    zonedDateTime: 'Date',
+    localdate: 'Date',
+    localdatetime: 'Date',
+    zoneddatetime: 'Date',
   } as const;
 
   const handleClassConvert = (lines: string[]) => {
@@ -52,7 +52,7 @@ export const Main: Component = () => {
       if (type === 'class') {
         outputValue.push(`export type ${name} = {`);
         continue;
-      } else if (type.includes('()')) {
+      } else if (type.includes('(') && type.includes(')')) {
         // Constructor
         continue;
       } else if (type.toLowerCase() in TypeMapping) {
