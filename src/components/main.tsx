@@ -22,9 +22,10 @@ export const Main: Component = () => {
     byte: 'number',
     float: 'number',
     double: 'number',
-    localdate: 'Date',
-    localdatetime: 'Date',
-    zoneddatetime: 'Date',
+    // Since the backend return JSON, dates are string in that format: "2021-08-31T00:00:00.000Z"
+    localdate: 'string',
+    localdatetime: 'string',
+    zoneddatetime: 'string',
   } as const;
 
   const handleClassConvert = (lines: string[]) => {
