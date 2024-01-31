@@ -17,6 +17,7 @@ export const Main: Component = () => {
     string: 'string',
     long: 'number',
     int: 'number',
+    integer: 'number',
     short: 'number',
     char: 'string',
     byte: 'number',
