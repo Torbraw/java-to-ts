@@ -30,6 +30,7 @@ export const Main: Component = () => {
 
   const handleClassConvert = (lines: string[]) => {
     const outputValue: string[] = [];
+    const extendsValue: string[] = [];
     let className = '';
 
     for (let line of lines) {
@@ -55,6 +56,15 @@ export const Main: Component = () => {
       if (type === 'class') {
         className = name;
         outputValue.push(`export type ${name} = {`);
+        if (words.includes('extends')) {
+          // Remove '{' from the words array
+          words.pop();
+          // Find the index of the 'extends' word and get all the next words
+          const index = words.indexOf('extends');
+          for (let i = index + 1; i < words.length; i++) {
+            extendsValue.push(words[i]);
+          }
+        }
         continue;
       } else if (type.includes(className)) {
         // Constructor
@@ -83,7 +93,11 @@ export const Main: Component = () => {
       outputValue.push(`  ${convertedName}: ${convertedType};`);
     }
 
-    outputValue.push('}');
+    if (extendsValue.length > 0) {
+      outputValue.push(`} & ${extendsValue.join(' & ')};`);
+    } else {
+      outputValue.push('};');
+    }
     setOutput(outputValue.join('\n'));
   };
 
